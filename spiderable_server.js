@@ -63,13 +63,21 @@ WebApp.connectHandlers.use(function (req, res, next) {
 
     // use Docker hostname if available to deal with proxy, otherwise append port if defined
     // need to also detemine if ssl is local or via proxy, this currently assumes ssl is in proxy
-    if (process.env.HOSTNAME && process.env.PORT) {
-      var absoluteUrl = "http://" + process.env.HOSTNAME + ":" + process.env.PORT;
-    } else if (process.env.PORT) {
-      var absoluteUrl = process.env.ROOT_URL  +":"+ process.env.PORT;
+    var port = '80';
+    if (process.env.PORT)
+      port = process.env.PORT
+
+    // are we using force-ssl, then use localhost
+    // per http://docs.meteor.com/#forcessl
+    // unencrypted connections from localhost are always accepted over HTTP.
+    // TBD: exploits unknown
+
+    if (Meteor.absoluteUrl.defaultOptions.secure == true || process.env.PORT){
+      var absoluteUrl = "http://localhost:" + port;
     } else {
       var absoluteUrl = Meteor.absoluteUrl();
     }
+
 
     var url = Spiderable._urlForPhantom(absoluteUrl , req.url);
 
