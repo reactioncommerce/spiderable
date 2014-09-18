@@ -58,16 +58,13 @@ WebApp.connectHandlers.use(function (req, res, next) {
   if (/\?.*_escaped_fragment_=/.test(req.url) ||
       _.any(Spiderable.userAgentRegExps, function (re) {
         return re.test(req.headers['user-agent']); })) {
-
-    // handle a port assigned even (should be siteAbsoluteUrl)
-
     // use Docker hostname if available to deal with proxy, otherwise append port if defined
     // need to also detemine if ssl is local or via proxy, this currently assumes ssl is in proxy
     var port = '80';
     if (process.env.PORT)
       port = process.env.PORT
 
-    // are we using force-ssl, then use localhost
+    // are we using force-ssl, or an unique port then use localhost
     // per http://docs.meteor.com/#forcessl
     // unencrypted connections from localhost are always accepted over HTTP.
     // TBD: exploits unknown
@@ -77,7 +74,6 @@ WebApp.connectHandlers.use(function (req, res, next) {
     } else {
       var absoluteUrl = Meteor.absoluteUrl();
     }
-
 
     var url = Spiderable._urlForPhantom(absoluteUrl , req.url);
 
