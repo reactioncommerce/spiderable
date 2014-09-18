@@ -60,8 +60,13 @@ WebApp.connectHandlers.use(function (req, res, next) {
         return re.test(req.headers['user-agent']); })) {
 
     // handle a port assigned even (should be siteAbsoluteUrl)
-    if (process.env.PORT) {
-      var absoluteUrl = process.env.ROOT_URL+":"+process.env.PORT;
+
+    // use Docker hostname if available to deal with proxy, otherwise append port if defined
+    // need to also detemine if ssl is local or via proxy, this currently assumes ssl is in proxy
+    if (process.env.HOSTNAME && process.env.PORT) {
+      var absoluteUrl = "http://" + process.env.HOSTNAME + ":" + process.env.PORT;
+    } else if (process.env.PORT) {
+      var absoluteUrl = process.env.ROOT_URL  +":"+ process.env.PORT;
     } else {
       var absoluteUrl = Meteor.absoluteUrl();
     }
