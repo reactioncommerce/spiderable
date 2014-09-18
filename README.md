@@ -1,4 +1,4 @@
-spiderable
-==========
+`meteor add ongoworks:spiderable`
 
-Docker + Ports friendly Meteor Spiderable
+#spiderable
+Uses port as set in meteor port and /tmp/ files instead of `/dev/stdin`
