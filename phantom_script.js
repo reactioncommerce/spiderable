@@ -21,7 +21,7 @@ var isReady = function () {
 
 var dumpPageContent = function () {
   var out = page.content;
-  out = out.replace(/<script[^>]+>(.|\n|\r)*?<\/script\s*>/ig, '');
+  out = out.replace(/<script([^>](?!type))*[^\s>]?(\stype\=("|')(application|text)\/javascript("|'))?([^>](?!type))*>(.|\n|\r)*?<\/script\s*>/ig, '');
   out = out.replace('<meta name="fragment" content="!">', '');
   console.log(out);
 };
