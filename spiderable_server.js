@@ -109,7 +109,7 @@ WebApp.connectHandlers.use(function (req, res, next) {
     child_process.execFile(
       '/bin/bash',
       ['-c',
-       ("exec phantomjs --load-images=no --ignore-ssl-errors=yes " + filename)],
+       ("exec phantomjs --load-images=no --disk-cache=yes --ignore-ssl-errors=yes " + filename)],
       {timeout: REQUEST_TIMEOUT, maxBuffer: MAX_BUFFER},
       function (error, stdout, stderr) {
         fs.unlink(filename);
